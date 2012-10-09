@@ -1,11 +1,9 @@
 var fs = require('fs')
   , bencode = require('./bencode')
-  , chunked = require('chunked-stream')
   , StreamDecoder = require('./StreamDecoder');
 
 //var path = '/home/masch/Downloads/facebook-themasch.zip';
 var path = './benchmark/test.torrent';
-var chunker = new chunked(':');
 var decoder = new StreamDecoder();
 var complete = [];
 var currP = complete;
@@ -81,7 +79,5 @@ decoder.on('data', function(data) {
 });
 
 
-chunker.pipe(decoder);
-fs.createReadStream(path).pipe(chunker);
-console.log(new Buffer(fs.readFileSync(path)).length);
+fs.createReadStream(path).pipe(decoder);
 console.log(bencode.decode(fs.readFileSync(path)));
